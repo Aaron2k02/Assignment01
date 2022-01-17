@@ -4,6 +4,7 @@
  */
 package Product;
 
+import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -134,29 +135,27 @@ public class JF_SellerComment extends javax.swing.JFrame {
     }//GEN-LAST:event_SellerCommentActionPerformed
 
     private void ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitActionPerformed
-        // TODO add your handling code here:
+        dispose();
+        JF_Product_Review sc = new JF_Product_Review();
+        sc.setLocationRelativeTo(null);
+        sc.setVisible(true);
     }//GEN-LAST:event_ExitActionPerformed
-
-    
     private void AddCommentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddCommentActionPerformed
          try {
              String customerComment = this.customerComment.getText();
              String sellerComment = this.SellerComment.getText();
-             
-             Class.forName("com.mysql.jdbc.Driver");
+                     
              Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/omazon", "root", "");
              
-              PreparedStatement pst = con.prepareStatement("update INTO product_review SET Seller Comment=? WHERE Comment= ?");
+              PreparedStatement pst = con.prepareStatement("update product_review SET SellerComment=? WHERE Comment= ?");
               pst.setString(1,sellerComment);  
               pst.setString(2,customerComment);
               
               pst.executeUpdate();
              JOptionPane.showMessageDialog(null, "You have Commented Succesfully");
-         } catch (ClassNotFoundException | SQLException ex) {
+         } catch (HeadlessException | SQLException ex) {
                JOptionPane.showMessageDialog(null, ex);
          }
-     
-       
     }//GEN-LAST:event_AddCommentActionPerformed
 
     private void customerCommentAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_customerCommentAncestorAdded
@@ -201,7 +200,7 @@ public class JF_SellerComment extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddComment;
     private javax.swing.JButton Exit;
-    private javax.swing.JTextField SellerComment;
+    public javax.swing.JTextField SellerComment;
     public javax.swing.JLabel customerComment;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables

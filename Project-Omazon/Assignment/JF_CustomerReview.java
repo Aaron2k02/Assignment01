@@ -18,7 +18,13 @@ import java.sql.*;
  * @author User
  */
 public class JF_CustomerReview extends javax.swing.JFrame {
+    
+    private String productName;
 
+    public JF_CustomerReview(String productName) {
+        initComponents();
+        this.productName = productName;
+    }
     /**
      * Creates new form JF_CustomerReview
      */
@@ -26,6 +32,9 @@ public class JF_CustomerReview extends javax.swing.JFrame {
         initComponents();
     }
 
+     
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -44,6 +53,11 @@ public class JF_CustomerReview extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentHidden(java.awt.event.ComponentEvent evt) {
+                formComponentHidden(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("OMAZON ");
@@ -153,21 +167,22 @@ public class JF_CustomerReview extends javax.swing.JFrame {
            // Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/omazon", "root", "");
             
-            PreparedStatement ps = con.prepareStatement("INSERT INTO product_review(userName,ProductId,Comment,Rating) VALUES (?,?,?,?)");
-            ps.setString(1, "");
-            ps.setInt(2, 1);
+            PreparedStatement ps = con.prepareStatement("INSERT INTO product_review(userName,product_Name,Comment,Rating) VALUES (?,?,?,?)");
+            ps.setString(1, "Aaron");
+            ps.setString(2,this.productName);
             ps.setString(3, comment);
             ps.setInt(4, rating);
             ps.executeUpdate();
                     
-            JOptionPane.showMessageDialog(null,"Successfully Added");
+            JOptionPane.showMessageDialog(null,"Review submitted!");
         } catch (HeadlessException | SQLException ex) {
             Logger.getLogger(JF_CustomerReview.class.getName()).log(Level.SEVERE, null, ex);
         }
-            
-        
-        
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void formComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentHidden
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formComponentHidden
 
     /**
      * @param args the command line arguments

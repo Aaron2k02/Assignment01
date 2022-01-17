@@ -4,9 +4,11 @@
  */
 package Assignment;
 
+import Product.JF_CustomerTransaction;
 import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -25,7 +27,7 @@ public class JF_mainPage_cus extends javax.swing.JFrame {
         
         try{
          Class.forName("com.mysql.cj.jdbc.Driver");
-         Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/omazon", "root", "PBB.v8*$z7bz#c5");
+         Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/omazon", "root", "");
          Statement st = con.createStatement();
          ResultSet res = st.executeQuery("select * from product ");
          
@@ -59,11 +61,11 @@ public class JF_mainPage_cus extends javax.swing.JFrame {
         initComponents();
         this.username = username;
         
-        DefaultTableModel model = new DefaultTableModel(new String[]{"Product Name","Price","Stock","Sales Count","Description"},0);      
+        DefaultTableModel model = new DefaultTableModel(new String[]{"Product Name","Price","Stock","Sales Count","Description","Category"},0);      
         
         try{
          Class.forName("com.mysql.cj.jdbc.Driver");
-         Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/omazon", "root", "PBB.v8*$z7bz#c5");
+         Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/omazon", "root", "");
          Statement st = con.createStatement();
          ResultSet res = st.executeQuery("select * from product ");
          
@@ -74,8 +76,9 @@ public class JF_mainPage_cus extends javax.swing.JFrame {
              int c = res.getInt("stock_count");
              String d = res.getString("descriptions");
              String f = res.getString("sales_count");
-             
-             model.addRow(new Object[]{a,b,c,f,d});
+             String g = res.getString("product_category");
+               
+             model.addRow(new Object[]{a,b,c,f,d,g});
              jTable1.setModel(model);
              jTable1.setVisible(true);
              
@@ -116,7 +119,7 @@ public class JF_mainPage_cus extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        TransactionHistory = new javax.swing.JButton();
         cartfield = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
@@ -185,10 +188,10 @@ public class JF_mainPage_cus extends javax.swing.JFrame {
             }
         });
 
-        jButton5.setText("Apparel");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        TransactionHistory.setText("Transaction History");
+        TransactionHistory.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                TransactionHistoryActionPerformed(evt);
             }
         });
 
@@ -251,10 +254,10 @@ public class JF_mainPage_cus extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(TransactionHistory, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(cartfield, javax.swing.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE)
+                                    .addComponent(cartfield, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addGap(17, 17, 17))))
         );
@@ -278,7 +281,7 @@ public class JF_mainPage_cus extends javax.swing.JFrame {
                     .addComponent(jButton2)
                     .addComponent(jButton3)
                     .addComponent(jButton4)
-                    .addComponent(jButton5)
+                    .addComponent(TransactionHistory)
                     .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -301,13 +304,13 @@ public class JF_mainPage_cus extends javax.swing.JFrame {
          sc.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void TransactionHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransactionHistoryActionPerformed
         // TODO add your handling code here:
          dispose();
-         JF_MC_apparel sc = new JF_MC_apparel();
+         JF_CustomerTransaction sc = new JF_CustomerTransaction();
          sc.setLocationRelativeTo(null);
          sc.setVisible(true);
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_TransactionHistoryActionPerformed
 
     private void cartfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cartfieldActionPerformed
         // TODO add your handling code here:
@@ -315,6 +318,7 @@ public class JF_mainPage_cus extends javax.swing.JFrame {
          JF_Cart sc = new JF_Cart();
          sc.setLocationRelativeTo(null);
          sc.setVisible(true);
+         
     }//GEN-LAST:event_cartfieldActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -323,6 +327,7 @@ public class JF_mainPage_cus extends javax.swing.JFrame {
          JF_profile sc = new JF_profile(username);
          sc.setLocationRelativeTo(null);
          sc.setVisible(true);
+         
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -331,6 +336,7 @@ public class JF_mainPage_cus extends javax.swing.JFrame {
          JF_MC_food sc = new JF_MC_food();
          sc.setLocationRelativeTo(null);
          sc.setVisible(true);
+         
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -339,6 +345,7 @@ public class JF_mainPage_cus extends javax.swing.JFrame {
          JF_MC_food sc = new JF_MC_food();
          sc.setLocationRelativeTo(null);
          sc.setVisible(true);
+         
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -349,21 +356,43 @@ public class JF_mainPage_cus extends javax.swing.JFrame {
          JF_search sc = new JF_search(search);
          sc.setLocationRelativeTo(null);
          sc.setVisible(true);
+         
     }//GEN-LAST:event_jButton6ActionPerformed
-
+     JF_Information pi = new JF_Information();
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
-         int Myindex = jTable1.getSelectedRow()+1;
-         System.out.println(Myindex);
-         dispose();
-         JF_Information sc = new JF_Information(this.username, Myindex);
-         sc.setLocationRelativeTo(null);
-         sc.setVisible(true);
+        dispose();
+        pi.setVisible(true);
+        pi.pack();
+        
+        int selectedRow = jTable1.getSelectedRow();
+        
+        TableModel model = jTable1.getModel();
+        
+        String ProductName = model.getValueAt(selectedRow, 0).toString();
+        String productPrice = model.getValueAt(selectedRow, 1).toString();
+        String productStock = model.getValueAt(selectedRow, 2).toString();
+        String SalesCount = model.getValueAt(selectedRow, 3).toString();
+        String productDescription = model.getValueAt(selectedRow, 4).toString();
+        String productCategory = model.getValueAt(selectedRow, 5).toString();
+        
+        pi.Product_Name.setText(ProductName);
+        pi.Product_Price.setText(productPrice);
+        pi.Product_Stock.setText(productStock);
+        pi.Product_SalesCount.setText(SalesCount);
+        pi.Product_Description.setText(productDescription);
+        pi.Product_Category.setText(productCategory);
+        
+//         int Myindex = jTable1.getSelectedRow()+1;
+//         System.out.println(Myindex);
+//         dispose();
+//         JF_Information sc = new JF_Information(this.username, Myindex);
+//         sc.setLocationRelativeTo(null);
+//         sc.setVisible(true);
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jTable1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseDragged
         // TODO add your handling code here:
-
     }//GEN-LAST:event_jTable1MouseDragged
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
@@ -400,7 +429,6 @@ public class JF_mainPage_cus extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(JF_mainPage_cus.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -410,12 +438,12 @@ public class JF_mainPage_cus extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton TransactionHistory;
     private javax.swing.JButton cartfield;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
