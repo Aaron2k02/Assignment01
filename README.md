@@ -291,17 +291,24 @@ Date	      Aspects
 ```
 ## Sample Output Program 
 
-
-![](Media/AddToCart.jpeg)
-![](Media/AvaibleProductInstore.jpeg)
-![](Media/Balance.jpeg)
-![](Media/BestSellingProduct.jpeg)
-![](Media/ChangeUserNamw.jpeg)
-![](Media/CustomerComment.png)
-![](Media/CustomerReview.png)
-![](Media/CustomerReviewStoreInDatabase.png)
+### Customer Prespectives 
 ![](Media/LoginPage.jpeg)
-![](Media/ProductByCategory.jpeg)
-![](Media/SellerCommentOnCustomerReview2.jpeg)
-![](Media/SellerCommentStoredInDatabase.png)
-![](Media/SellerManageTheirOwnProduct.png)
+![](Media/AvaibleProductInstore.jpeg)
+![](Media/BestSellingProduct.jpeg)
+![](Media/AddToCart.jpeg)
+![](Media/ProductByCategory.jpeg)<br/>
+![](Media/Balance.jpeg)<br/>
+![](Media/TopupBalancet.jpeg)<br/>
+![](Media/SettingAvaible.jpeg)<br/>
+![](Media/ChangeUserNamw.jpeg)<br/>
+![](Media/CustomerReview.png)<br/>
+![](Media/CustomerComment.png)<br/>
+
+
+### Seller Prespectives
+![](Media/SellerPage.jpeg)<br/>
+![](Media/SellerManageThierOwnProduct.png)<br/>
+![](Media/SellerCanSeeCustomerComentOnTheirProduct.png)<br/>
+![](Media/SellerCommentOnCustomerReview2.png)<br/>
+![](Media/SellerCommentStoredInDatabase.png)<br/>
+![](Media/SellerProfit.png)<br/>
