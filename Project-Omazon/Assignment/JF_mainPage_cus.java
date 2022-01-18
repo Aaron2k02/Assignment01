@@ -7,6 +7,7 @@ package Assignment;
 import Product.JF_CustomerTransaction;
 import java.sql.*;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -33,6 +34,7 @@ public class JF_mainPage_cus extends javax.swing.JFrame {
          
          
          while(res.next()){
+             
              String a = res.getString("product_name");
              int b= res.getInt("price");
              int c = res.getInt("stock_count");
@@ -43,8 +45,7 @@ public class JF_mainPage_cus extends javax.swing.JFrame {
              jTable1.setModel(model);
              jTable1.setVisible(true);
              
-         }
-             
+            }
             
         }catch (ClassNotFoundException e) {
             System.out.println("Error 1");
@@ -62,13 +63,14 @@ public class JF_mainPage_cus extends javax.swing.JFrame {
         this.username = username;
         
         DefaultTableModel model = new DefaultTableModel(new String[]{"Product Name","Price","Stock","Sales Count","Description","Category"},0);      
+         
+        model.setRowCount(0);
         
         try{
          Class.forName("com.mysql.cj.jdbc.Driver");
          Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/omazon", "root", "");
          Statement st = con.createStatement();
          ResultSet res = st.executeQuery("select * from product ");
-         
          
          while(res.next()){
              String a = res.getString("product_name");
@@ -79,11 +81,12 @@ public class JF_mainPage_cus extends javax.swing.JFrame {
              String g = res.getString("product_category");
                
              model.addRow(new Object[]{a,b,c,f,d,g});
-             jTable1.setModel(model);
-             jTable1.setVisible(true);
              
          }
-             
+             jTable1.setModel(model);
+             jTable1.setVisible(true);
+             jTable1.setRowHeight(150);
+             jTable1.getColumnModel().getColumn(5).setPreferredWidth(150);     
             
         }catch (ClassNotFoundException e) {
             System.out.println("Error 1");
@@ -148,6 +151,15 @@ public class JF_mainPage_cus extends javax.swing.JFrame {
         });
         jTable1.setUpdateSelectionOnSort(false);
         jTable1.setVerifyInputWhenFocusTarget(false);
+        jTable1.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                jTable1AncestorAdded(evt);
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
         jTable1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 jTable1MouseDragged(evt);
@@ -310,6 +322,7 @@ public class JF_mainPage_cus extends javax.swing.JFrame {
          JF_CustomerTransaction sc = new JF_CustomerTransaction();
          sc.setLocationRelativeTo(null);
          sc.setVisible(true);
+         
     }//GEN-LAST:event_TransactionHistoryActionPerformed
 
     private void cartfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cartfieldActionPerformed
@@ -317,7 +330,7 @@ public class JF_mainPage_cus extends javax.swing.JFrame {
          dispose();
          JF_Cart sc = new JF_Cart();
          sc.setLocationRelativeTo(null);
-         sc.setVisible(true);
+         sc.setVisible(true); 
          
     }//GEN-LAST:event_cartfieldActionPerformed
 
@@ -375,7 +388,11 @@ public class JF_mainPage_cus extends javax.swing.JFrame {
         String SalesCount = model.getValueAt(selectedRow, 3).toString();
         String productDescription = model.getValueAt(selectedRow, 4).toString();
         String productCategory = model.getValueAt(selectedRow, 5).toString();
+           
         
+        JF_Information sc = new JF_Information(ProductName);
+        
+        System.out.println(ProductName);
         pi.Product_Name.setText(ProductName);
         pi.Product_Price.setText(productPrice);
         pi.Product_Stock.setText(productStock);
@@ -402,6 +419,10 @@ public class JF_mainPage_cus extends javax.swing.JFrame {
          sc.setLocationRelativeTo(null);
          sc.setVisible(true);
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jTable1AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jTable1AncestorAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable1AncestorAdded
 
     /**
      * @param args the command line arguments

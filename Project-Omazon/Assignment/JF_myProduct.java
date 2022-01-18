@@ -107,6 +107,15 @@ public class JF_myProduct extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
+        jTable1.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                jTable1AncestorAdded(evt);
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jButton1.setText("Manage Product");
@@ -171,6 +180,10 @@ public class JF_myProduct extends javax.swing.JFrame {
          sc.setVisible(true);
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTable1AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jTable1AncestorAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable1AncestorAdded
 
     /**
      * @param args the command line arguments

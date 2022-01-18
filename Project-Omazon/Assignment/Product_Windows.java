@@ -82,32 +82,35 @@ public class Product_Windows extends javax.swing.JFrame {
 
     // populate table with product information 
     
-    
-    
     public void Display_Product_In_Table(){
-        ArrayList<ProductList> P_List = ProductDB.BestSelling();
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        //clearing table content;
-        model.setRowCount(0);
-        Object[] row = new Object[6];
-        for(int i=0;i<P_List.size();i++){
+        try {
             
-            row[0] = P_List.get(i).getProductId();
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/omazon", "root", "");
+            Statement st = con.createStatement();
             
-            row[1] = P_List.get(i).getProductName();
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            //clearing table content;
+            ResultSet rs = st.executeQuery("select * from product ");
+            model.setRowCount(0);
+            Object[] row = new Object[6];
             
-            row[2] = P_List.get(i).getDescription();
-            
-            row[3] = P_List.get(i).getPrice();
-            
-            row[4] = P_List.get(i).getStockcount();
-            
-            row[5] = ResizeImage(null,P_List.get(i).getImage());
-       
+            while(rs.next()){
+                
+            row[0] = rs.getString("product_name");
+            row[1] = rs.getString("description");
+            row[2] = rs.getString("price");
+            row[3] = rs.getString("stock_count");
+            row[4] = rs.getString("sales_count");
+            row[5] = rs.getString("product_category");
+             
             model.addRow(row);
+            }
             jTable1.setRowHeight(150);
             jTable1.getColumnModel().getColumn(5).setPreferredWidth(150);
+        } catch (SQLException ex) {
+            Logger.getLogger(Product_Windows.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         
     }
     // Execute SQL
@@ -519,28 +522,18 @@ public class Product_Windows extends javax.swing.JFrame {
             
         }
            
-        
-        
     }//GEN-LAST:event_Btn_AddImageActionPerformed
 
     private void UpdateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateButtonActionPerformed
         
         if(checkInput() && pricefield.getText() != null){
-            
-
-            
             if(ImagePath == null){
-
                 ProductDB.update(namefield.getText(), descriptionfield.getText(), pricefield.getText(), stockfield.getText(),  rolefield.getSelectedItem().toString(), null);
                 Display_Product_In_Table();
             }else{
-
                   ProductDB.update(namefield.getText(), descriptionfield.getText(), pricefield.getText(), stockfield.getText(),  rolefield.getSelectedItem().toString(), ImagePath);
                   Display_Product_In_Table();
-                
-
             }
-            
         }else{
                  JOptionPane.showMessageDialog(null,"Please fill in the field correctly! ");
         }
@@ -584,8 +577,6 @@ public class Product_Windows extends javax.swing.JFrame {
         Connection conn=ProductDB.getConnection();
         if(!namefield.getText().equals("")){
            //
-               
-
               ProductDB.delete(namefield.getText());
               Display_Product_In_Table();
               //JOptionPane.showMessageDialog(null,"Product Deleted Successfully");
@@ -593,7 +584,6 @@ public class Product_Windows extends javax.swing.JFrame {
         }else{
               JOptionPane.showMessageDialog(null,"Please select a Product");
         }
-        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked

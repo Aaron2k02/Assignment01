@@ -19,7 +19,7 @@ import java.sql.*;
  */
 public class JF_CustomerReview extends javax.swing.JFrame {
     
-    private String productName;
+    private String productName,userName;
 
     public JF_CustomerReview(String productName) {
         initComponents();
@@ -28,6 +28,13 @@ public class JF_CustomerReview extends javax.swing.JFrame {
     /**
      * Creates new form JF_CustomerReview
      */
+    
+    public JF_CustomerReview(String productName, String userName) {
+        initComponents();
+        this.productName = productName;
+        this.userName = userName;
+    }
+
     public JF_CustomerReview() {
         initComponents();
     }
@@ -69,6 +76,7 @@ public class JF_CustomerReview extends javax.swing.JFrame {
         jLabel3.setText("Comment : ");
 
         CommentField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        CommentField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         CommentField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CommentFieldActionPerformed(evt);
@@ -145,18 +153,15 @@ public class JF_CustomerReview extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void CommentFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CommentFieldActionPerformed
-        
-        
-        
-        
+       
     }//GEN-LAST:event_CommentFieldActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-//          this.setVisible(false);
-//          JF_Information sc=new JF_Information(userName);
-//          sc.setLocationRelativeTo(null);
-//          sc.setVisible(true);
-          
+         dispose();
+         JF_CustomerTransaction  sc=new JF_CustomerTransaction ();
+         sc.setLocationRelativeTo(null);
+         sc.setVisible(true);
+         
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -167,11 +172,12 @@ public class JF_CustomerReview extends javax.swing.JFrame {
            // Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/omazon", "root", "");
             
-            PreparedStatement ps = con.prepareStatement("INSERT INTO product_review(userName,product_Name,Comment,Rating) VALUES (?,?,?,?)");
-            ps.setString(1, "Aaron");
+            PreparedStatement ps = con.prepareStatement("INSERT INTO product_review(userName,product_Name,Comment,Rating,SellerComment) VALUES (?,?,?,?,?)");
+            ps.setString(1,"Aaron");
             ps.setString(2,this.productName);
             ps.setString(3, comment);
             ps.setInt(4, rating);
+            ps.setString(5," ");
             ps.executeUpdate();
                     
             JOptionPane.showMessageDialog(null,"Review submitted!");

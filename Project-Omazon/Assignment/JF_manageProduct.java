@@ -33,7 +33,7 @@ public class JF_manageProduct extends javax.swing.JFrame {
 
     JF_manageProduct(String username) {
                 initComponents();
-               Display_Product_In_Table();
+                Display_Product_In_Table();
                 this.username = username;
                 
     }
@@ -77,10 +77,9 @@ public class JF_manageProduct extends javax.swing.JFrame {
     }
     
     //Check field for input
-    
     public boolean checkInput(){
         
-        if(namefield.getText()==null || descriptionfield.getText()==null||pricefield.getText()==null||stockfield.getText()==null||salesfield.getText()==null||rolefield.getSelectedItem().toString()==null ){
+        if(namefield.getText()==null || descriptionfield.getText()==null||pricefield.getText()==null||stockfield.getText()==null||productSalesCountfield.getText()==null||rolefield.getSelectedItem().toString()==null ){
             return false;
         }else{
             try{
@@ -95,57 +94,43 @@ public class JF_manageProduct extends javax.swing.JFrame {
     }
     // Display Product Information in Table
     // Fill ArrayList with The Data 
-       
 
     // populate table with product information 
     
-    
-    
     public void Display_Product_In_Table(){
-        ArrayList<ProductList> P_List = ProductDB.TableContent();
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        //clearing table content;
-        model.setRowCount(0);
-        Object[] row = new Object[7];
-        for(int i=0;i<P_List.size();i++){
+        try {
             
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/omazon", "root", "");
+            Statement st = con.createStatement();
             
-            row[0] = P_List.get(i).getProductName();
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            //clearing table content;
+            ResultSet rs = st.executeQuery("SELECT * FROM product WHERE username ="+"'Aaron'"+" ");
+            model.setRowCount(0);
+            Object[] row = new Object[6];
             
-            row[1] = P_List.get(i).getDescription();
-            
-            row[2] = P_List.get(i).getPrice();
-            
-            row[3] = P_List.get(i).getStockcount();
-            
-            row[4] = P_List.get(i).getSalescount();
-            
-            row[5] = P_List.get(i).getProductCategory();
-            
-            row[6] = ResizeImage(null,P_List.get(i).getImage());
-       
+            while(rs.next()){
+                
+            row[0] = rs.getString("product_name");
+            row[1] = rs.getString("descriptions");
+            row[2] = rs.getString("price");
+            row[3] = rs.getString("stock_count");
+            row[4] = rs.getString("sales_count");
+            row[5] = rs.getString("product_category");
+             
             model.addRow(row);
-//            jTable1.setRowHeight(150);
-//            jTable1.getColumnModel().getColumn(5).setPreferredWidth(150);
+            }
+             jTable1.setModel(model);
+             jTable1.setVisible(true);
+            jTable1.setRowHeight(150);
+            jTable1.getColumnModel().getColumn(4).setPreferredWidth(150);
+        } catch (SQLException ex) {
+            Logger.getLogger(Product_Windows.class.getName()).log(Level.SEVERE, null, ex);
         }
     
         
     }
-    // Execute SQL
-   public void DisplayItem(int index){
-      
-       namefield.setText(ProductDB.TableContent().get(index).getProductName());
-       descriptionfield.setText(ProductDB.TableContent().get(index).getDescription());
-       pricefield.setText(Float.toString((float) ProductDB.TableContent().get(index).getPrice()));
-       stockfield.setText(Integer.toString(ProductDB.TableContent().get(index).getStockcount()));
-       salesfield.setText(Integer.toString(ProductDB.TableContent().get(index).getSalescount()));
-       DisplayImagefield.setIcon(ResizeImage(null,ProductDB.TableContent().get(index).getImage()));
-       // Display_image.setIcon(ResizeImage(null,ProductDB.TableGenerator().get(index).getImage());
-
-   }
-
-
-
+ 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -172,13 +157,13 @@ public class JF_manageProduct extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
-        salesfield = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         DisplayImagefield = new javax.swing.JLabel();
+        productSalesCountfield = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -238,6 +223,12 @@ public class JF_manageProduct extends javax.swing.JFrame {
             }
         });
 
+        pricefield.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pricefieldActionPerformed(evt);
+            }
+        });
+
         rolefield.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Electronic", "Sport and recreation", "Food&Beverage", "Apparel" }));
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
@@ -265,6 +256,19 @@ public class JF_manageProduct extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
+        jTable1.getTableHeader().setResizingAllowed(false);
+        jTable1.getTableHeader().setReorderingAllowed(false);
+        jTable1.setUpdateSelectionOnSort(false);
+        jTable1.setVerifyInputWhenFocusTarget(false);
+        jTable1.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                jTable1AncestorAdded(evt);
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -274,12 +278,6 @@ public class JF_manageProduct extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         jLabel2.setText("Product Name:");
-
-        salesfield.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                salesfieldActionPerformed(evt);
-            }
-        });
 
         jLabel3.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         jLabel3.setText("Description:");
@@ -308,6 +306,19 @@ public class JF_manageProduct extends javax.swing.JFrame {
             }
         });
 
+        DisplayImagefield.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                DisplayImagefieldAncestorAdded(evt);
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+
+        productSalesCountfield.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        productSalesCountfield.setText("0");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -316,9 +327,6 @@ public class JF_manageProduct extends javax.swing.JFrame {
                 .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(pricefield, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -326,7 +334,7 @@ public class JF_manageProduct extends javax.swing.JFrame {
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(19, 19, 19))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel1)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
@@ -346,7 +354,7 @@ public class JF_manageProduct extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel6)
                                 .addGap(18, 18, 18)
-                                .addComponent(salesfield, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(productSalesCountfield, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
@@ -376,6 +384,10 @@ public class JF_manageProduct extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(397, 397, 397))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -416,9 +428,11 @@ public class JF_manageProduct extends javax.swing.JFrame {
                             .addComponent(jLabel5)
                             .addComponent(stockfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel6)
-                            .addComponent(salesfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(productSalesCountfield, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(2, 2, 2)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
@@ -428,7 +442,7 @@ public class JF_manageProduct extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -461,17 +475,11 @@ public class JF_manageProduct extends javax.swing.JFrame {
         if(!namefield.getText().equals("")){
            //
                
-
               ProductDB.delete(namefield.getText());
-              Display_Product_In_Table();
-              //JOptionPane.showMessageDialog(null,"Product Deleted Successfully");
-            
+              Display_Product_In_Table();            
         }else{
               JOptionPane.showMessageDialog(null,"Please select a Product");
         }
-
-              
-          
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void namefieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_namefieldActionPerformed
@@ -486,10 +494,6 @@ public class JF_manageProduct extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_stockfieldActionPerformed
 
-    private void salesfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salesfieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_salesfieldActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
          dispose();
@@ -500,49 +504,23 @@ public class JF_manageProduct extends javax.swing.JFrame {
 
     private void AddProduct_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddProduct_ButtonActionPerformed
         // TODO add your handling code here:
-              if(checkInput()&& ImagePath != null){
-             Connection conn=ProductDB.getConnection(); 
-
-                
-                ProductDB.insert(namefield.getText(),descriptionfield.getText(),pricefield.getText(),stockfield.getText(), rolefield.getSelectedItem().toString(), ImagePath);
-                Display_Product_In_Table();
+             if(checkInput()&& ImagePath != null){
+                 try {
+                     
+                      Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/omazon", "root", "");
+                     
+                     ProductDB.insert(namefield.getText(),descriptionfield.getText(),pricefield.getText(),stockfield.getText(), rolefield.getSelectedItem().toString(), ImagePath,"Aaron");
+                     
+                     Display_Product_In_Table();
+                     
+                 } catch (SQLException ex) {
+                     
+                     Logger.getLogger(JF_manageProduct.class.getName()).log(Level.SEVERE, null, ex);
+                 }
                 
             }else{
              JOptionPane.showMessageDialog(null,"Please Fill the required field");
           }
-//        String name = namefield.getText();
-//        String description = descriptionfield.getText();
-//        int price = Integer.parseInt(pricefield.getText());
-//        int stock = Integer.parseInt(stockfield.getText());
-//        int sales = Integer.parseInt(salesfield.getText());
-//        String sort = rolefield.getSelectedItem().toString();
-//       
-//         if(namefield.getText().isEmpty()||descriptionfield.getText().isEmpty()||pricefield.getText().isEmpty()||stockfield.getText().isEmpty()||salesfield.getText().isEmpty()){
-//              JOptionPane.showMessageDialog(null, "Missing Information!");
-//         }else{
-//             
-//         try{
-//                 Class.forName("com.mysql.cj.jdbc.Driver");
-//                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/omazon", "root", "PBB.v8*$z7bz#c5");
-//                 Statement st = con.createStatement();
-//                 ResultSet res = st.executeQuery("select * from product  ");
-//                 
-//                 if(res.next()){
-//                     int executeUpdate = st.executeUpdate("INSERT INTO product(product_name, descriptions, price, stock_count, sales_count, product_category, username) "
-//                             + "VALUES(' "+name+" ',' "+description+" ', "+price+", "+stock+", "+sales+", ' "+sort+" ', ' "+this.username+" '  ");
-//                     JOptionPane.showMessageDialog(null, "Product has been added");
-//                     jTable1.setModel(.resultSetToTableModel(res));
-                    
-//                 }
-//        }catch (ClassNotFoundException e) {
-//            System.out.println("Error 1");
-//            System.out.println(e);
-//            }
-//        catch (SQLException e){
-//            System.out.println("Error 2");
-//            System.out.println(e);
-//            }
-//         }
         
     }//GEN-LAST:event_AddProduct_ButtonActionPerformed
 
@@ -554,74 +532,37 @@ public class JF_manageProduct extends javax.swing.JFrame {
             
             if(ImagePath == null){
 
-                ProductDB.update(namefield.getText(), descriptionfield.getText(), pricefield.getText(), stockfield.getText(),  rolefield.getSelectedItem().toString(), null);
+                 ProductDB.update(namefield.getText(), descriptionfield.getText(), pricefield.getText(), stockfield.getText(),  rolefield.getSelectedItem().toString(), null);
                 Display_Product_In_Table();
             }else{
 
                   ProductDB.update(namefield.getText(), descriptionfield.getText(), pricefield.getText(), stockfield.getText(),  rolefield.getSelectedItem().toString(), ImagePath);
                   Display_Product_In_Table();
                 
-
             }
             
         }else{
                  JOptionPane.showMessageDialog(null,"Please fill in the field correctly! ");
         }
-//        String name = namefield.getText();
-//        String description = descriptionfield.getText();
-//        int price = Integer.parseInt(pricefield.getText());
-//        int stock = Integer.parseInt(stockfield.getText());
-//        int sales = Integer.parseInt(salesfield.getText());
-//        String sort = rolefield.getSelectedItem().toString();
-//       
-//        if(namefield.getText().isEmpty()||descriptionfield.getText().isEmpty()||pricefield.getText().isEmpty()||stockfield.getText().isEmpty()||salesfield.getText().isEmpty()){
-//              JOptionPane.showMessageDialog(null, "Missing Information!");
-//         }else{
-//         try{
-//                 Class.forName("com.mysql.cj.jdbc.Driver");
-//                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/omazon", "root", "PBB.v8*$z7bz#c5");
-//                 String Query = "UPDATE product SET product_name = ' " +name+ " ' " +", descriptions = ' " +description+ " ' " + ", price = ' " +price+ " ' "+", stock_count = ' " +stock+ " ' "+", sales_count = ' " +sales+ " ' where product_name = ' " +name+ " ' ";
-//                 Statement st = con.createStatement();
-//                 st.executeUpdate(Query);
-//                 ResultSet res = st.executeQuery("select * from product where product_name = ' " +name+ " ' ");
-                 
-//                 if(res.next()){
-//                 int executeUpdate = st.executeUpdate("UPDATE product SET product_name = ' " +name+ " ' " +", descriptions = ' " +description+ " ' " + ", price = ' " +price+ " ' "+", stock_count = ' " +stock+ " ' "+", sales_count = ' " +sales+ " ' "+", product_category = ' " +sort+ " ' WHERE product_name = ' " +name+ " ' ");
-//                 JOptionPane.showMessageDialog(null, "Product Updated");
-//                 }
-//        }catch (ClassNotFoundException e) {
-//            System.out.println("Error 1");
-//            System.out.println(e);
-//            }
-//        catch (SQLException e){
-//            System.out.println("Error 2");
-//            System.out.println(e);
-//            }
-            
-//        }
+//    
     }//GEN-LAST:event_UpdateButtonActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
-               int index = jTable1.getSelectedRow();
-               DisplayItem(index);
-//        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
-//        int Myindex = jTable1.getSelectedRow();
-//        namefield.setText(model.getValueAt(Myindex, 0).toString());
-//        descriptionfield.setText(model.getValueAt(Myindex, 1).toString());
-//        pricefield.setText(model.getValueAt(Myindex, 2).toString());
-//        stockfield.setText(model.getValueAt(Myindex, 3).toString());
-//        salesfield.setText(model.getValueAt(Myindex, 4).toString());
-//        
+        
+          DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+          int selectedRow = jTable1.getSelectedRow();
+          namefield.setText(model.getValueAt(selectedRow, 0).toString());
+          descriptionfield.setText(model.getValueAt(selectedRow, 1).toString());
+          pricefield.setText(model.getValueAt(selectedRow, 2).toString());
+          stockfield.setText(model.getValueAt(selectedRow, 3).toString());
+          productSalesCountfield.setText(model.getValueAt(selectedRow, 4).toString());
+      
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        namefield.setText(" ");
-        descriptionfield.setText(" ");
-        pricefield.setText(" ");
-        stockfield.setText(" ");
-        salesfield.setText(" ");
+    
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -630,13 +571,13 @@ public class JF_manageProduct extends javax.swing.JFrame {
         
         try{
          Class.forName("com.mysql.cj.jdbc.Driver");
-         Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/omazon", "root", "PBB.v8*$z7bz#c5");
+         Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/omazon", "root", "");
          Statement st = con.createStatement();
          ResultSet res = st.executeQuery("select * from product ");
          
          
          while(res.next()){
-//             int a = res.getInt("Product_Id");
+//           int a = res.getInt("Product_Id");
              String b = res.getString("product_name");
              String c = res.getString("descriptions");
              int d = res.getInt("price");
@@ -659,6 +600,18 @@ public class JF_manageProduct extends javax.swing.JFrame {
             System.out.println(e);
             }
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void DisplayImagefieldAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_DisplayImagefieldAncestorAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DisplayImagefieldAncestorAdded
+
+    private void jTable1AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jTable1AncestorAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable1AncestorAdded
+
+    private void pricefieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pricefieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pricefieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -724,8 +677,8 @@ public class JF_manageProduct extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField namefield;
     private javax.swing.JTextField pricefield;
+    private javax.swing.JLabel productSalesCountfield;
     private javax.swing.JComboBox<String> rolefield;
-    private javax.swing.JTextField salesfield;
     private javax.swing.JTextField stockfield;
     // End of variables declaration//GEN-END:variables
 }

@@ -4,6 +4,8 @@
  */
 package Assignment;
 
+import Product.JF_Product_Review;
+
 /**
  *
  * @author abrar
@@ -15,7 +17,6 @@ public class JF_mainPage_seller extends javax.swing.JFrame {
     public String getUsername() {
         return username;
     }
-
     public void setUsername(String username) {
         this.username = username;
     }
@@ -30,7 +31,6 @@ public class JF_mainPage_seller extends javax.swing.JFrame {
         initComponents();
         this.username = username;
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -132,13 +132,17 @@ public class JF_mainPage_seller extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
+        dispose();
+        JF_Product_Review sc = new JF_Product_Review();
+        sc.setLocationRelativeTo(null);
+         sc.setVisible(true);
+       
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
          dispose();
-         JF_trans sc = new JF_trans(this.username);
+         JF_Profit sc = new JF_Profit(this.username);
          sc.setLocationRelativeTo(null);
          sc.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
