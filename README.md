@@ -291,24 +291,54 @@ Date	      Aspects
 ```
 ## Sample Output Program 
 
-### Customer Prespectives 
+## Login page
 ![](Media/LoginPage.jpeg)
-![](Media/AvaibleProductInstore.jpeg)
-![](Media/BestSellingProduct.jpeg)
-![](Media/AddToCart.jpeg)
+
+## Customer Prespectives 
+![](Media/CustomerProductPage.jpeg)
+
+## Top 3 Best Selling Product
+![](Media/BestSellingProduct.jpeg)<br/>
+
+## Cart and favourite product of customer
+![](Media/Cart.jpeg)<br/>
+![](Media/Favourite.jpeg)<br/>
+
+## Display product by category
 ![](Media/ProductByCategory.jpeg)<br/>
-![](Media/Balance.jpeg)<br/>
-![](Media/TopupBalancet.jpeg)<br/>
+
+## Search by seller or by product 
+![](Media/seacrchByProduct.jpeg)<br/>
+![](Media/seacrchByProductOutput.jpeg)<br/>
+![](Media/searchBySeller.jpeg)<br/>
+![](Media/SellerInformationInDatabase.jpeg)<br/>
+
+## Customer purchase product 
+![](Media/CustomerCart.jpeg)<br/>
+
+## Customer Transaction History 
+![](Media/CustomerTransactionHistory.jpeg)<br/>
+
+## Setting function avaible
 ![](Media/SettingAvaible.jpeg)<br/>
+![](Media/Balance.jpeg)<br/>
+![](Media/TopupBalance.jpeg)<br/>
 ![](Media/ChangeUserNamw.jpeg)<br/>
+
+## Customer comment on purchased product 
 ![](Media/CustomerReview.png)<br/>
 ![](Media/CustomerComment.png)<br/>
 
-
-### Seller Prespectives
+## Seller Prespectives
 ![](Media/SellerPage.jpeg)<br/>
-![](Media/SellerManageThierOwnProduct.png)<br/>
-![](Media/SellerCanSeeCustomerComentOnTheirProduct.png)<br/>
+
+## Seller manage Their Product 
+![](Media/SellerManageProductPage.jpeg)<br/>
+
+## Seller can view and give comment on customer comment 
 ![](Media/SellerCommentOnCustomerReview2.png)<br/>
+![](Media/SellerProductReview.jpg)<br/>
 ![](Media/SellerCommentStoredInDatabase.png)<br/>
-![](Media/SellerProfit.png)<br/>
+
+## Seller check thier purchased product and profit earned
+![](Media/SellerTransactionAndProfit.jpeg)<br/>
